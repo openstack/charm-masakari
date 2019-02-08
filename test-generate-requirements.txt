@@ -1,0 +1,5 @@
+# Requirements for generating a charm
+charm-tools
+simple-json
+jinja2
+git+https://github.com/openstack-charmers/charm-templates-openstack.git
