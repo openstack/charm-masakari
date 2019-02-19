@@ -22,10 +22,17 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
     service_name = name = 'masakari'
 
     # First release supported
-    release = 'mitaka'
+    release = 'rocky'
 
     # List of packages to install for this charm
-    packages = ['libapache2-mod-wsgi', 'apache2', 'python-apt', 'cinder-common']
+    packages = ['apache2', 'python-apt',
+                'cinder-common', 'python3-oslo.policy', 'python3-pymysql',
+                'python3-keystoneauth1', 'python3-oslo.db',
+                'python3-oslo.service', 'python3-oslo.middleware',
+                'python3-oslo.messaging', 'python3-oslo.versionedobjects',
+                'python3-novaclient', 'python3-keystonemiddleware',
+                'python3-taskflow', 'libapache2-mod-wsgi-py3',
+                'python3-microversion-parse']
 
     api_ports = {
         'masakari': {
@@ -59,7 +66,8 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
     }
 
 
-    sync_cmd = ['masakari-manage', '--config-file', '/etc/masakari/masakari.conf', 'db', 'sync']
+    sync_cmd = ['masakari-manage', '--config-file',
+                '/etc/masakari/masakari.conf', 'db', 'sync']
 
     def get_amqp_credentials(self):
         return ('masakari', 'masakari')
@@ -92,8 +100,10 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
                 'git', 'clone', '-b', 'stable/{}'.format(os_release),
                 'https://github.com/openstack/masakari.git', git_dir])
             subprocess.check_call([
-                'sudo', 'python', 'setup.py', 'install'], cwd=git_dir)
+                'sudo', 'python3', 'setup.py', 'install'], cwd=git_dir)
         subprocess.check_call(['mkdir', '-p', '/var/lock/masakari', '/var/log/masakari', '/var/lib/masakari'])
         subprocess.check_call(['cp', 'templates/masakari-engine.service', '/lib/systemd/system'])
+        subprocess.check_call(['cp', 'templates/wsgi.py', '/usr/local/lib/python3.6/dist-packages/masakari/api/openstack/wsgi.py'])
         subprocess.check_call(['systemctl', 'daemon-reload'])
         subprocess.check_call(['systemctl', 'start', 'masakari-engine'])
+        subprocess.check_call(['cp', 'templates/api-paste.ini', '/etc/masakari/'])

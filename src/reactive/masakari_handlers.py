@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import subprocess
 
 import charms_openstack.charm as charm
 import charms.reactive as reactive
@@ -39,6 +40,7 @@ def render_config(*args):
 #        charm_class.upgrade_if_available(args)
         charm_class.render_with_interfaces(args)
         charm_class.assess_status()
+    subprocess.check_call(['chgrp', '-R', 'ubuntu', '/etc/masakari'])
     reactive.set_state('config.rendered')
 
 # db_sync checks if sync has been done so rerunning is a noop
