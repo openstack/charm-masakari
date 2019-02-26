@@ -66,6 +66,12 @@ relations:
   - ceph-mon:client
 - - cinder-ceph:ceph-access
   - nova-compute:ceph-access
+- - nova-compute:juju-info
+  - masakari-monitors:container
+- - nova-compute:juju-info
+  - hacluster:juju-info
+- - keystone:identity-credentials
+  - masakari-monitors:identity-credentials
 applications:
   glance:
     charm: cs:~openstack-charmers-next/glance
@@ -80,7 +86,8 @@ applications:
       block-device: "None"
       glance-api-version: 2
   keystone:
-    charm: cs:~openstack-charmers-next/keystone
+    charm: cs:~gnuoy/keystone-36
+    series: bionic
     num_units: 1
     options:
       admin-password: openstack
@@ -153,4 +160,10 @@ applications:
       osd-devices:  cinder,40G
   cinder-ceph:
     charm: cinder-ceph
-
+  masakari-monitors:
+    charm: cs:~gnuoy/masakari-monitors-2
+  hacluster:
+    charm: hacluster
+    options:
+      corosync_transport: unicast
+      cluster_count: 3

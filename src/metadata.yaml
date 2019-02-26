@@ -1,5 +1,5 @@
 name: masakari
-maintainer: example@example.com
+maintainer: OpenStack Charmers <openstack-charmers@lists.ubuntu.com>
 summary: Short summary of charm
 description: |
   Longline summary of charm 
@@ -7,6 +7,3 @@ tags:
   - openstack
 series:
   - bionic
-  - cosmic
-  - xenial
-  - trusty
