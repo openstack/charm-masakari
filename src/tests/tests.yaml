@@ -1,6 +1,6 @@
 charm_name: masakari
 tests:
-  - zaza.charm_tests.nova.tests.CirrosGuestCreateTest
+  - tests.tests_masakari.MasakariTest
 configure:
   - zaza.charm_tests.glance.setup.add_cirros_image
   - zaza.charm_tests.glance.setup.add_lts_image

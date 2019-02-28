@@ -4,3 +4,4 @@ build/
 .tox/
 func-results.json
 test-charm/
+__pycache__

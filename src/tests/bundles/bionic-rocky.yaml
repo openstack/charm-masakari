@@ -163,7 +163,7 @@ applications:
   masakari-monitors:
     charm: cs:~gnuoy/masakari-monitors-2
   hacluster:
-    charm: hacluster
+    charm: cs:~gnuoy/hacluster-6
     options:
       corosync_transport: unicast
       cluster_count: 3
