@@ -124,25 +124,24 @@ class MasakariTest(test_utils.OpenStackBaseTest):
 
 
     def configure(self):
-         self.masakari_client.create_segment(
-             name='seg1',
-             recovery_method='auto',
-             service_type='COMPUTE')
-         self.masakari_client.create_segment(
-             name='seg2',
-             recovery_method='auto',
-             service_type='COMPUTE')
-         hypervisors = self.nova_client.hypervisors.list()
-         segment_ids = [s.uuid for s in self.masakari_client.segments()] * len(hypervisors)
-         for hypervisor in hypervisors:
-             target_segment = segment_ids.pop()
-             hostname = hypervisor.hypervisor_hostname.split('.')[0]
-             self.masakari_client.create_host(
-                 name=hostname,
-                 segment_id=target_segment,
+         try:
+             self.masakari_client.create_segment(
+                 name='seg1',
                  recovery_method='auto',
-                 control_attributes='SSH',
-                 type='COMPUTE')
+                 service_type='COMPUTE')
+             hypervisors = self.nova_client.hypervisors.list()
+             segment_ids = [s.uuid for s in self.masakari_client.segments()] * len(hypervisors)
+             for hypervisor in hypervisors:
+                 target_segment = segment_ids.pop()
+                 hostname = hypervisor.hypervisor_hostname.split('.')[0]
+                 self.masakari_client.create_host(
+                     name=hostname,
+                     segment_id=target_segment,
+                     recovery_method='auto',
+                     control_attributes='SSH',
+                     type='COMPUTE')
+         except:
+             pass
 
     @tenacity.retry(wait=tenacity.wait_exponential(multiplier=1, max=60),
                     reraise=True, stop=tenacity.stop_after_attempt(80))
@@ -186,6 +185,7 @@ class MasakariTest(test_utils.OpenStackBaseTest):
 
 
     def test_instance_failover(self):
+         self.configure()
          # Launch guest
          logging.info('Launching guest')
          lts = 'bionic'

@@ -8,3 +8,14 @@ options:
       .
       This network will be used for tenant network traffic in overlay
       networks.
+  evacuation-delay:
+    type: int
+    default: 30
+    description: |
+      wait_period_after_service_update
+  evacuate-all-instances:
+    type: boolean
+    default: True
+    description: |
+      Whether to restrict instance evacuation to instances with ha enabled
+      in their metadata
