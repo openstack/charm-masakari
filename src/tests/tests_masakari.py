@@ -187,10 +187,15 @@ class MasakariTest(test_utils.OpenStackBaseTest):
     def test_instance_failover(self):
          self.configure()
          # Launch guest
-         logging.info('Launching guest')
          lts = 'bionic'
-         vm_name = 'zazatest'
-         self.launch_instance('bionic', use_boot_volume=True, vm_name=vm_name)
+         vm_name = 'zaza_test_instance_failover'
+         try:
+             server = self.nova_client.servers.find(name=vm_name)
+             logging.info('Found existing guest')
+         except:
+             logging.info('Launching new guest')
+             self.launch_instance('bionic', use_boot_volume=True, vm_name=vm_name)
+             server = self.nova_client.servers.find(name=vm_name)
          logging.info('Finding hosting hypervisor')
          server = self.nova_client.servers.find(name=vm_name)
          current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
