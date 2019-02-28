@@ -17,6 +17,7 @@
 """Encapsulate cinder-ns5 testing."""
 
 import logging
+import tenacity
 import time
 import uuid
 
@@ -122,111 +123,92 @@ class MasakariTest(test_utils.OpenStackBaseTest):
 #            privkey=openstack_utils.get_private_key(nova_utils.KEYPAIR_NAME))
 
 
-    def test_blah(self):
-#         self.masakari_client.create_segment(
-#             name='seg1',
-#             recovery_method='auto',
-#             service_type='COMPUTE')
-#         self.masakari_client.create_segment(
-#             name='seg2',
-#             recovery_method='auto',
-#             service_type='COMPUTE')
-#         hypervisors = self.nova_client.hypervisors.list()
-#         segment_ids = [s.uuid for s in self.masakari_client.segments()] * len(hypervisors)
-#         for hypervisor in hypervisors:
-#             target_segment = segment_ids.pop()
-#             hostname = hypervisor.hypervisor_hostname.split('.')[0]
-#             self.masakari_client.create_host(
-#                 name=hostname,
-#                 segment_id=target_segment,
-#                 recovery_method='auto',
-#                 control_attributes='SSH',
-#                 type='COMPUTE')
-         lts = 'bionic'
-#         images = openstack_utils.get_images_by_name(self.glance_client, lts)
-#         assert len(images) > 0, "Image not found"
-#         image = images[0]
-         test_vol_name = "zaza{}".format(lts)
-#         vol_new = self.cinder_client.volumes.create(
-#             name=test_vol_name,
-#             imageRef=image.id,
-#             size=3)
-#         openstack_utils.resource_reaches_status(
-#             self.cinder_client.volumes,
-#             vol_new.id,
-#             expected_status='available')
-#         test_vol = self.cinder_client.volumes.find(name=test_vol_name)
-#         self.cinder_client.volumes.set_bootable(test_vol, True)
-#         self.launch_instance('bionic', use_boot_volume=True)
-         vm_name = '20190228090550'
-#         server = self.nova_client.servers.find(name=vm_name)
-#         guest_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
-#         hypervisor_machine_number = guest_hypervisor.split('-')[-1]         
-#         unit = [u.entity_id
-#                 for u in zaza.model.get_units(application_name='nova-compute')
-#                 if u.data['machine-id'] == hypervisor_machine_number][0]
-#         zaza.model.run_on_unit(unit, command='shutdown -h now', model_name=self.model_name)
+    def configure(self):
+         self.masakari_client.create_segment(
+             name='seg1',
+             recovery_method='auto',
+             service_type='COMPUTE')
+         self.masakari_client.create_segment(
+             name='seg2',
+             recovery_method='auto',
+             service_type='COMPUTE')
+         hypervisors = self.nova_client.hypervisors.list()
+         segment_ids = [s.uuid for s in self.masakari_client.segments()] * len(hypervisors)
+         for hypervisor in hypervisors:
+             target_segment = segment_ids.pop()
+             hostname = hypervisor.hypervisor_hostname.split('.')[0]
+             self.masakari_client.create_host(
+                 name=hostname,
+                 segment_id=target_segment,
+                 recovery_method='auto',
+                 control_attributes='SSH',
+                 type='COMPUTE')
 
+    @tenacity.retry(wait=tenacity.wait_exponential(multiplier=1, max=60),
+                    reraise=True, stop=tenacity.stop_after_attempt(80))
+    def wait_for_server_migration(self, vm_name, original_hypervisor):
+        server = self.nova_client.servers.find(name=vm_name)
+        current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
+        logging.info('{} is on {} in state {}'.format(vm_name, current_hypervisor, server.status))
+        assert (original_hypervisor != current_hypervisor and server.status == 'ACTIVE')
+        logging.info('SUCCESS {} has migrated to {}'.format(vm_name, current_hypervisor))
+
+    def svc_control(self, unit_name, action, services):
+         logging.info('{} {} on {}'.format(action.title(), services, unit_name))
+         cmds = []
+         for svc in services:
+             cmds.append("systemctl {} {}".format(action, svc))
+         zaza.model.run_on_unit(
+             unit_name, command=';'.join(cmds),
+             model_name=self.model_name)
+
+    def enable_the_things(self):
+         logging.info("Enabling all the things")
+         # Start corosync et al
+         for u in zaza.model.get_units(application_name='nova-compute'):
+             self.svc_control(u.entity_id, 'start', ['corosync', 'pacemaker', 'nova-compute'])
+
+         # Enable nova-compute in nova
+         for svc in self.nova_client.services.list():
+             if svc.status == 'disabled':
+                 logging.info("Enabling {} on {}".format(svc.binary, svc.host))
+                 self.nova_client.services.enable(svc.host, svc.binary)
+
+         # Enable nova-compute in masakari
+         for segment in self.masakari_client.segments():
+             for host in self.masakari_client.hosts(segment_id=segment.uuid):
+                 if host.on_maintenance:
+                     logging.info("Removing maintenance mode from masakari host {}".format(host.uuid))
+                     self.masakari_client.update_host(
+                         host.uuid,
+                         segment_id=segment.uuid,
+                         **{'on_maintenance': False})
+
+
+    def test_instance_failover(self):
+         # Launch guest
+         logging.info('Launching guest')
+         lts = 'bionic'
+         vm_name = 'zazatest'
+         self.launch_instance('bionic', use_boot_volume=True, vm_name=vm_name)
+         logging.info('Finding hosting hypervisor')
+         server = self.nova_client.servers.find(name=vm_name)
+         current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
+
+         # Simulate compute node shutdown 
+         logging.info('Simulate compute node shutdown')
          server = self.nova_client.servers.find(name=vm_name)
          guest_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
-         print("{} {}".format(guest_hypervisor, server.status))
+         hypervisor_machine_number = guest_hypervisor.split('-')[-1]         
+         unit_name = [u.entity_id
+                 for u in zaza.model.get_units(application_name='nova-compute')
+                 if u.data['machine-id'] == hypervisor_machine_number][0]
 
-         print(unit)
-         assert list(self.masakari_client.segments()) == ['bob'], "{}".format(list(self.masakari_client.segments()))
+         # Simulate shutdown
+         self.svc_control(unit_name, 'stop', ['corosync', 'pacemaker', 'nova-compute'])
 
+         # Wait for instance move
+         self.wait_for_server_migration(vm_name, current_hypervisor)
 
-#    def test_cinder_config(self):
-#        logging.info('ns5')
-#        expected_contents = {
-#            'cinder-ns5': {
-#                'volume_driver': [
-#                    'cinder.volume.drivers.nexenta.ns5.nfs.NexentaNfsDriver'],
-#                'volume_backend_name': ['cinder-ns5'],
-#                'nexenta_rest_port': ['0'],
-#                'nexenta_user': ['admin'],
-#                'nas_share_path': ['tank/data']}}
-#
-#        zaza.model.run_on_leader(
-#            'cinder',
-#            'sudo cp /etc/cinder/cinder.conf /tmp/',
-#            model_name=self.model_name)
-#        zaza.model.block_until_oslo_config_entries_match(
-#            'cinder',
-#            '/tmp/cinder.conf',
-#            expected_contents,
-#            model_name=self.model_name,
-#            timeout=2)
-#
-#    def create_volume(self):
-#        test_vol_name = "zaza{}".format(uuid.uuid1().fields[0])
-#        vol_new = self.cinder_client.volumes.create(
-#            name=test_vol_name,
-#            size=1)
-#        openstack_utils.resource_reaches_status(
-#            self.cinder_client.volumes,
-#            vol_new.id,
-#            expected_status='available')
-#        test_vol = self.cinder_client.volumes.find(name=test_vol_name)
-#        self.assertEqual(
-#            getattr(test_vol, 'os-vol-host-attr:host').split('#')[0],
-#            'cinder@cinder-ns5')
-#        return test_vol_name
-#
-#    def test_create_volume(self):
-#        volume_name = self.create_volume()
-#        volume = self.cinder_client.volumes.find(name=volume_name)
-#        self.cinder_client.volumes.delete(volume)
-#
-#    def test_attatch_volume_to_guest(self):
-#        volume_name = self.create_volume()
-#        volume = self.cinder_client.volumes.find(name=volume_name)
-#        servers = self.nova_client.servers.findall()
-#        assert len(servers) > 0, "No server found to run attach test"
-#        server = servers[0]
-#        self.nova_client.volumes.create_server_volume(server.id, volume.id)
-#        attached_volumes = self.nova_client.volumes.get_server_volumes(
-#            server.id)
-#        assert len(attached_volumes) > 0, "No attached volumes found"
-#        assert attached_volumes[0].id == volume.id, ("Error matching attached "
-#                                                     "volume")
-#        print(openstack_utils.get_private_key(nova_utils.KEYPAIR_NAME))
+         # Bring things back
+         self.enable_the_things()
