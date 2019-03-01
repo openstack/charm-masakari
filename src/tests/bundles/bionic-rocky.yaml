@@ -146,7 +146,7 @@ applications:
     series: bionic
     num_units: 1
     options:
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-rocky/proposed
   ceph-mon:
     charm: ceph-mon
     num_units: 3

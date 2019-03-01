@@ -11,13 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import subprocess
 
 import charms_openstack.charm as charm
 import charms.reactive as reactive
 
-# This charm's library contains all of the handler code associated with
-# sdn_charm
 import charm.openstack.masakari as masakari  # noqa
 
 charm.use_defaults(
@@ -28,6 +25,7 @@ charm.use_defaults(
     'identity-service.available',  # enables SSL support
     'config.changed',
     'update-status')
+
 
 @reactive.when('shared-db.available')
 @reactive.when('identity-service.available')
@@ -40,14 +38,15 @@ def render_config(*args):
 #        charm_class.upgrade_if_available(args)
         charm_class.render_with_interfaces(args)
         charm_class.assess_status()
-    subprocess.check_call(['chgrp', '-R', 'ubuntu', '/etc/masakari'])
     reactive.set_state('config.rendered')
+
 
 # db_sync checks if sync has been done so rerunning is a noop
 @reactive.when('config.rendered')
 def init_db():
     with charm.provide_charm_instance() as charm_class:
         charm_class.db_sync()
+
 
 @reactive.when('ha.connected')
 def cluster_connected(hacluster):

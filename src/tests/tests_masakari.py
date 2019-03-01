@@ -19,11 +19,8 @@
 import logging
 import tenacity
 import time
-import uuid
 
-#from keystoneauth1.identity.generic import password as ks_password
 from openstack import connection
-from openstack import exceptions
 
 import zaza.model
 import zaza.charm_tests.test_utils as test_utils
@@ -54,7 +51,8 @@ class MasakariTest(test_utils.OpenStackBaseTest):
                                      region_name='RegionOne')
         cls.masakari_client = conn.instance_ha
 
-    def launch_instance(self, instance_key, use_boot_volume=False, vm_name=None):
+    def launch_instance(self, instance_key, use_boot_volume=False,
+                        vm_name=None):
         """Launch an instance.
 
         :param instance_key: Key to collect associated config data with.
@@ -71,13 +69,12 @@ class MasakariTest(test_utils.OpenStackBaseTest):
 
         if use_boot_volume:
             bdmv2 = [{
-                    'boot_index': '0',
-                    'uuid': image.id,
-                    'source_type': 'image',
-                    'volume_size': flavor.disk,
-                    'destination_type': 'volume',
-                    'delete_on_termination': True,
-                    }]
+                'boot_index': '0',
+                'uuid': image.id,
+                'source_type': 'image',
+                'volume_size': flavor.disk,
+                'destination_type': 'volume',
+                'delete_on_termination': True}]
             image = None
 
         # Launch instance.
@@ -122,98 +119,112 @@ class MasakariTest(test_utils.OpenStackBaseTest):
 #            password=None,
 #            privkey=openstack_utils.get_private_key(nova_utils.KEYPAIR_NAME))
 
-
     def configure(self):
-         try:
-             self.masakari_client.create_segment(
-                 name='seg1',
-                 recovery_method='auto',
-                 service_type='COMPUTE')
-             hypervisors = self.nova_client.hypervisors.list()
-             segment_ids = [s.uuid for s in self.masakari_client.segments()] * len(hypervisors)
-             for hypervisor in hypervisors:
-                 target_segment = segment_ids.pop()
-                 hostname = hypervisor.hypervisor_hostname.split('.')[0]
-                 self.masakari_client.create_host(
-                     name=hostname,
-                     segment_id=target_segment,
-                     recovery_method='auto',
-                     control_attributes='SSH',
-                     type='COMPUTE')
-         except:
-             pass
+        try:
+            self.masakari_client.create_segment(
+                name='seg1',
+                recovery_method='auto',
+                service_type='COMPUTE')
+            hypervisors = self.nova_client.hypervisors.list()
+            segment_ids = [s.uuid for s in self.masakari_client.segments()]
+            segment_ids = segment_ids * len(hypervisors)
+            for hypervisor in hypervisors:
+                target_segment = segment_ids.pop()
+                hostname = hypervisor.hypervisor_hostname.split('.')[0]
+                self.masakari_client.create_host(
+                    name=hostname,
+                    segment_id=target_segment,
+                    recovery_method='auto',
+                    control_attributes='SSH',
+                    type='COMPUTE')
+        except:
+            pass
 
     @tenacity.retry(wait=tenacity.wait_exponential(multiplier=1, max=60),
                     reraise=True, stop=tenacity.stop_after_attempt(80))
     def wait_for_server_migration(self, vm_name, original_hypervisor):
         server = self.nova_client.servers.find(name=vm_name)
         current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
-        logging.info('{} is on {} in state {}'.format(vm_name, current_hypervisor, server.status))
-        assert (original_hypervisor != current_hypervisor and server.status == 'ACTIVE')
-        logging.info('SUCCESS {} has migrated to {}'.format(vm_name, current_hypervisor))
+        logging.info('{} is on {} in state {}'.format(
+            vm_name,
+            current_hypervisor,
+            server.status))
+        assert (original_hypervisor != current_hypervisor and
+                server.status == 'ACTIVE')
+        logging.info('SUCCESS {} has migrated to {}'.format(
+            vm_name,
+            current_hypervisor))
 
     def svc_control(self, unit_name, action, services):
-         logging.info('{} {} on {}'.format(action.title(), services, unit_name))
-         cmds = []
-         for svc in services:
-             cmds.append("systemctl {} {}".format(action, svc))
-         zaza.model.run_on_unit(
-             unit_name, command=';'.join(cmds),
-             model_name=self.model_name)
+        logging.info('{} {} on {}'.format(action.title(), services, unit_name))
+        cmds = []
+        for svc in services:
+            cmds.append("systemctl {} {}".format(action, svc))
+        zaza.model.run_on_unit(
+            unit_name, command=';'.join(cmds),
+            model_name=self.model_name)
 
     def enable_the_things(self):
-         logging.info("Enabling all the things")
-         # Start corosync et al
-         for u in zaza.model.get_units(application_name='nova-compute'):
-             self.svc_control(u.entity_id, 'start', ['corosync', 'pacemaker', 'nova-compute'])
+        logging.info("Enabling all the things")
+        # Start corosync et al
+        for u in zaza.model.get_units(application_name='nova-compute'):
+            self.svc_control(
+                u.entity_id,
+                'start',
+                ['corosync', 'pacemaker', 'nova-compute'])
 
-         # Enable nova-compute in nova
-         for svc in self.nova_client.services.list():
-             if svc.status == 'disabled':
-                 logging.info("Enabling {} on {}".format(svc.binary, svc.host))
-                 self.nova_client.services.enable(svc.host, svc.binary)
+        # Enable nova-compute in nova
+        for svc in self.nova_client.services.list():
+            if svc.status == 'disabled':
+                logging.info("Enabling {} on {}".format(svc.binary, svc.host))
+                self.nova_client.services.enable(svc.host, svc.binary)
 
-         # Enable nova-compute in masakari
-         for segment in self.masakari_client.segments():
-             for host in self.masakari_client.hosts(segment_id=segment.uuid):
-                 if host.on_maintenance:
-                     logging.info("Removing maintenance mode from masakari host {}".format(host.uuid))
-                     self.masakari_client.update_host(
-                         host.uuid,
-                         segment_id=segment.uuid,
-                         **{'on_maintenance': False})
-
+        # Enable nova-compute in masakari
+        for segment in self.masakari_client.segments():
+            for host in self.masakari_client.hosts(segment_id=segment.uuid):
+                if host.on_maintenance:
+                    logging.info("Removing maintenance mode from masakari "
+                                 "host {}".format(host.uuid))
+                    self.masakari_client.update_host(
+                        host.uuid,
+                        segment_id=segment.uuid,
+                        **{'on_maintenance': False})
 
     def test_instance_failover(self):
-         self.configure()
-         # Launch guest
-         lts = 'bionic'
-         vm_name = 'zaza_test_instance_failover'
-         try:
-             server = self.nova_client.servers.find(name=vm_name)
-             logging.info('Found existing guest')
-         except:
-             logging.info('Launching new guest')
-             self.launch_instance('bionic', use_boot_volume=True, vm_name=vm_name)
-             server = self.nova_client.servers.find(name=vm_name)
-         logging.info('Finding hosting hypervisor')
-         server = self.nova_client.servers.find(name=vm_name)
-         current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
+        self.configure()
+        # Launch guest
+        vm_name = 'zaza_test_instance_failover'
+        try:
+            server = self.nova_client.servers.find(name=vm_name)
+            logging.info('Found existing guest')
+        except:
+            logging.info('Launching new guest')
+            self.launch_instance(
+                'bionic',
+                use_boot_volume=True,
+                vm_name=vm_name)
+            server = self.nova_client.servers.find(name=vm_name)
+        logging.info('Finding hosting hypervisor')
+        server = self.nova_client.servers.find(name=vm_name)
+        current_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
 
-         # Simulate compute node shutdown 
-         logging.info('Simulate compute node shutdown')
-         server = self.nova_client.servers.find(name=vm_name)
-         guest_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
-         hypervisor_machine_number = guest_hypervisor.split('-')[-1]         
-         unit_name = [u.entity_id
-                 for u in zaza.model.get_units(application_name='nova-compute')
-                 if u.data['machine-id'] == hypervisor_machine_number][0]
+        logging.info('Simulate compute node shutdown')
+        server = self.nova_client.servers.find(name=vm_name)
+        guest_hypervisor = getattr(server, 'OS-EXT-SRV-ATTR:host')
+        hypervisor_machine_number = guest_hypervisor.split('-')[-1]
+        unit_name = [
+            u.entity_id
+            for u in zaza.model.get_units(application_name='nova-compute')
+            if u.data['machine-id'] == hypervisor_machine_number][0]
 
-         # Simulate shutdown
-         self.svc_control(unit_name, 'stop', ['corosync', 'pacemaker', 'nova-compute'])
+        # Simulate shutdown
+        self.svc_control(
+            unit_name,
+            'stop',
+            ['corosync', 'pacemaker', 'nova-compute'])
 
-         # Wait for instance move
-         self.wait_for_server_migration(vm_name, current_hypervisor)
+        # Wait for instance move
+        self.wait_for_server_migration(vm_name, current_hypervisor)
 
-         # Bring things back
-         self.enable_the_things()
+        # Bring things back
+        self.enable_the_things()
