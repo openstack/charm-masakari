@@ -161,7 +161,7 @@ applications:
   cinder-ceph:
     charm: cinder-ceph
   masakari-monitors:
-    charm: cs:~gnuoy/masakari-monitors-2
+    charm: cs:~gnuoy/masakari-monitors-4
   hacluster:
     charm: cs:~gnuoy/hacluster-6
     options:
