@@ -9,6 +9,6 @@ configure:
   - zaza.charm_tests.nova.setup.manage_ssh_key
   - zaza.charm_tests.masakari.setup.create_segments
 gate_bundles:
-  - bionic-rocky
+  - bionic-rocky-pacemaker-remote
 smoke_bundles:
-  - bionic-rocky
+  - bionic-rocky-pacemaker-remote
