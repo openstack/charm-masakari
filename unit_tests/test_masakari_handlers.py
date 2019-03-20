@@ -45,7 +45,7 @@ class TestRegisteredHooks(test_utils.TestRegisteredHooks):
         self.registered_hooks_test_helper(handlers, hook_set, defaults)
 
 
-class TestRenderStuff(test_utils.PatchHelper):
+class TestHandlers(test_utils.PatchHelper):
 
     def _patch_provide_charm_instance(self):
         masakari_charm = mock.MagicMock()

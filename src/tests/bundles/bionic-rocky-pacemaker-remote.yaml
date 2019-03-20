@@ -166,14 +166,14 @@ applications:
   cinder-ceph:
     charm: cinder-ceph
   masakari-monitors:
-    charm: cs:~gnuoy/masakari-monitors-4
+    charm: cs:~gnuoy/masakari-monitors-5
   hacluster:
-    charm: cs:~gnuoy/hacluster-14
+    charm: cs:~gnuoy/hacluster-17
     options:
       corosync_transport: unicast
       cluster_count: 3
   pacemaker-remote:
-    charm: cs:~gnuoy/pacemaker-remote-6
+    charm: cs:~gnuoy/pacemaker-remote-7
     options:
       enable-stonith: False
       enable-resources: False

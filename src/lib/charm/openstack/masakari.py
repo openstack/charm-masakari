@@ -41,10 +41,10 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
 
     ha_resources = ['vips', 'haproxy', 'dnsha']
 
-    release_pkg = 'masakari'
+    release_pkg = 'masakari-api'
 
     package_codenames = {
-        'masakari-common': collections.OrderedDict([
+        'masakari-api': collections.OrderedDict([
             ('2', 'mitaka'),
             ('3', 'newton'),
             ('4', 'ocata'),
