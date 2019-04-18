@@ -104,7 +104,7 @@ applications:
       block-device: "None"
       glance-api-version: 2
   keystone:
-    charm: cs:~gnuoy/keystone-36
+    charm: cs:~openstack-charmers-next/keystone
     series: bionic
     num_units: 1
     options:
@@ -165,7 +165,6 @@ applications:
     num_units: 3
     options:
       openstack-origin: cloud:bionic-rocky/proposed
-      vip: 10.5.110.1
   ceph-mon:
     charm: ceph-mon
     num_units: 3
@@ -180,14 +179,14 @@ applications:
   cinder-ceph:
     charm: cinder-ceph
   masakari-monitors:
-    charm: cs:~gnuoy/masakari-monitors-5
+    charm: cs:~openstack-charmers-next/masakari-monitors
   hacluster:
-    charm: cs:~gnuoy/hacluster-28
+    charm: cs:~openstack-charmers-next/hacluster
     options:
       corosync_transport: unicast
       cluster_count: 3
   pacemaker-remote:
-    charm: cs:~gnuoy/pacemaker-remote-8
+    charm: cs:~openstack-charmers-next/pacemaker-remote
     options:
       enable-stonith: False
       enable-resources: False
