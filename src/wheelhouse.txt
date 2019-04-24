@@ -1,0 +1,4 @@
+dnspython
+
+jinja2
+psutil
