@@ -10,9 +10,13 @@ configure:
   - zaza.openstack.charm_tests.nova.setup.manage_ssh_key
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 gate_bundles:
-  - bionic-rocky-pacemaker-remote-ssl
+# Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
+# packaging
+# - bionic-rocky-pacemaker-remote-ssl
+  - bionic-stein-pacemaker-remote-ssl
+  - bionic-train-pacemaker-remote-ssl
 smoke_bundles:
-  - bionic-rocky-pacemaker-remote-ssl
+  - bionic-train-pacemaker-remote-ssl
 target_deploy_status:
   easyrsa:
     workload-status-message: Certificate Authority connected.
