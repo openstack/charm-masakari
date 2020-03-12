@@ -192,12 +192,12 @@ applications:
   masakari-monitors:
     charm: cs:~openstack-charmers-next/masakari-monitors
   hacluster:
-    charm: cs:~gnuoy/hacluster-53
+    charm: cs:~openstack-charmers-next/hacluster
     options:
       corosync_transport: unicast
       cluster_count: 3
   pacemaker-remote:
-    charm: cs:~gnuoy/pacemaker-remote-12
+    charm: cs:~openstack-charmers-next/pacemaker-remote
     options:
       enable-stonith: False
       enable-resources: False
