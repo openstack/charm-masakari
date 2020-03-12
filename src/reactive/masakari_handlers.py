@@ -23,6 +23,7 @@ charm.use_defaults(
     'shared-db.connected',
     'identity-service.connected',
     'identity-service.available',  # enables SSL support
+    'certificates.available',
     'config.changed',
     'update-status')
 

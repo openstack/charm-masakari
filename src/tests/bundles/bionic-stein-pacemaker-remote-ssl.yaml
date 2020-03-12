@@ -95,7 +95,7 @@ applications:
     charm: cs:~openstack-charmers-next/glance
     num_units: 1
     options:
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       worker-multiplier: 0.25
   cinder:
     charm: cs:~openstack-charmers-next/cinder
@@ -109,7 +109,7 @@ applications:
     num_units: 1
     options:
       admin-password: openstack
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       worker-multiplier: 0.25
   mysql:
     charm: cs:~openstack-charmers-next/percona-cluster
@@ -123,14 +123,14 @@ applications:
     options:
       flat-network-providers: physnet1
       neutron-security-groups: true
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       worker-multiplier: 0.25
   neutron-gateway:
     charm: cs:~openstack-charmers-next/neutron-gateway
     num_units: 1
     options:
       bridge-mappings: physnet1:br-ex
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       worker-multiplier: 0.25
   neutron-openvswitch:
     charm: cs:~openstack-charmers-next/neutron-openvswitch
@@ -140,7 +140,7 @@ applications:
     num_units: 1
     options:
       network-manager: Neutron
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       worker-multiplier: 0.25
       debug: true
   nova-compute:
@@ -152,7 +152,7 @@ applications:
       enable-live-migration: true
       enable-resize: true
       migration-auth-type: ssh
-      openstack-origin: cloud:bionic-rocky
+      openstack-origin: cloud:bionic-stein
       debug: true
       cpu-model: kvm64
       cpu-mode: custom
@@ -166,7 +166,7 @@ applications:
     series: bionic
     num_units: 3
     options:
-      openstack-origin: cloud:bionic-rocky/proposed
+      openstack-origin: cloud:bionic-stein
   ceph-mon:
     charm: ceph-mon
     num_units: 3
