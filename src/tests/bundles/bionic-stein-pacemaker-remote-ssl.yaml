@@ -162,24 +162,24 @@ applications:
     charm: cs:~openstack-charmers-next/rabbitmq-server
     num_units: 1
   masakari:
-    charm: masakari
+    charm: ../../../masakari
     series: bionic
     num_units: 3
     options:
       openstack-origin: cloud:bionic-stein
   ceph-mon:
-    charm: ceph-mon
+    charm: cs:~openstack-charmers-next/ceph-mon
     num_units: 3
     options:
       expected-osd-count: 3
   ceph-osd:
-    charm: ceph-osd
+    charm: cs:~openstack-charmers-next/ceph-osd
     constraints: mem=1G
     num_units: 3
     storage:
       osd-devices:  cinder,40G
   cinder-ceph:
-    charm: cinder-ceph
+    charm: cs:~openstack-charmers-next/cinder-ceph
   masakari-monitors:
     charm: cs:~openstack-charmers-next/masakari-monitors
   hacluster:
