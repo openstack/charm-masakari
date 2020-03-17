@@ -10,7 +10,7 @@ options:
       networks.
   evacuation-delay:
     type: int
-    default: 30
+    default: 60
     description: |
       wait_period_after_service_update
   evacuate-all-instances:
