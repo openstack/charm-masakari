@@ -25,6 +25,7 @@ charm.use_defaults(
     'identity-service.available',  # enables SSL support
     'certificates.available',
     'config.changed',
+    'cluster.available',
     'update-status')
 
 
