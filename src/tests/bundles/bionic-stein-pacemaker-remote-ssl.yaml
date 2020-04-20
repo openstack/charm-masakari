@@ -171,11 +171,14 @@ applications:
     charm: cs:~openstack-charmers-next/ceph-mon
     num_units: 3
     options:
+      source: cloud:bionic-stein
       expected-osd-count: 3
   ceph-osd:
     charm: cs:~openstack-charmers-next/ceph-osd
     constraints: mem=1G
     num_units: 3
+    options:
+      source: cloud:bionic-stein
     storage:
       osd-devices:  cinder,40G
   cinder-ceph:
