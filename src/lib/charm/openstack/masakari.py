@@ -78,3 +78,11 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
     @property
     def internal_url(self):
         return super().internal_url + "/v1/%(tenant_id)s"
+
+
+class MasakariCharmUssuri(MasakariCharm):
+    """From ussuri onwards needs to use python3
+    """
+
+    release = 'ussuri'
+    python_version = 3

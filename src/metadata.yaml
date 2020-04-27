@@ -1,10 +1,15 @@
 name: masakari
 maintainer: OpenStack Charmers <openstack-charmers@lists.ubuntu.com>
-summary: Short summary of charm
+summary: Masakari - Instances High Availability Service
 description: |
-  Longline summary of charm 
+  Masakari provides Instances High Availability Service for OpenStack clouds by
+  automatically recovering failed Instances. Currently, Masakari can recover
+  KVM-based Virtual Machine(VM)s from failure events such as VM process down,
+  provisioning process down, and nova-compute host failure. Masakari also
+  provides an API service to manage and control the automated rescue mechanism.
 tags:
   - openstack
 series:
   - bionic
   - eoan
+  - focal
