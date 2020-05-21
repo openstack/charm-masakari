@@ -100,20 +100,20 @@ relations:
   - placement:certificates
 applications:
   glance:
-    charm: cs:~openstack-charmers-next/glance
+    charm: cs:~openstack-charmers/glance
     num_units: 1
     options:
       openstack-origin: cloud:bionic-train
       worker-multiplier: 0.25
   cinder:
-    charm: cs:~openstack-charmers-next/cinder
+    charm: cs:~openstack-charmers/cinder
     num_units: 1
     options:
       openstack-origin: cloud:bionic-train
       block-device: "None"
       glance-api-version: 2
   keystone:
-    charm: cs:~openstack-charmers-next/keystone
+    charm: cs:~openstack-charmers/keystone
     series: bionic
     num_units: 1
     options:
@@ -121,13 +121,13 @@ applications:
       openstack-origin: cloud:bionic-train
       worker-multiplier: 0.25
   mysql:
-    charm: cs:~openstack-charmers-next/percona-cluster
+    charm: cs:~openstack-charmers/percona-cluster
     num_units: 1
     options:
       innodb-buffer-pool-size: 256M
       max-connections: 1000
   neutron-api:
-    charm: cs:~openstack-charmers-next/neutron-api
+    charm: cs:~openstack-charmers/neutron-api
     num_units: 1
     options:
       flat-network-providers: physnet1
@@ -135,17 +135,17 @@ applications:
       openstack-origin: cloud:bionic-train
       worker-multiplier: 0.25
   neutron-gateway:
-    charm: cs:~openstack-charmers-next/neutron-gateway
+    charm: cs:~openstack-charmers/neutron-gateway
     num_units: 1
     options:
       bridge-mappings: physnet1:br-ex
       openstack-origin: cloud:bionic-train
       worker-multiplier: 0.25
   neutron-openvswitch:
-    charm: cs:~openstack-charmers-next/neutron-openvswitch
+    charm: cs:~openstack-charmers/neutron-openvswitch
     num_units: 0
   nova-cloud-controller:
-    charm: cs:~openstack-charmers-next/nova-cloud-controller
+    charm: cs:~openstack-charmers/nova-cloud-controller
     num_units: 1
     options:
       network-manager: Neutron
@@ -153,7 +153,7 @@ applications:
       worker-multiplier: 0.25
       debug: true
   nova-compute:
-    charm: cs:~openstack-charmers-next/nova-compute
+    charm: cs:~openstack-charmers/nova-compute
     num_units: 3
     constraints: mem=4G
     options:
@@ -168,7 +168,7 @@ applications:
       # Allow for more retries when testing ontop of openstack
       config-flags: block_device_allocate_retries=120
   rabbitmq-server:
-    charm: cs:~openstack-charmers-next/rabbitmq-server
+    charm: cs:~openstack-charmers/rabbitmq-server
     num_units: 1
   masakari:
     charm: ../../../masakari
@@ -177,13 +177,13 @@ applications:
     options:
       openstack-origin: cloud:bionic-train
   ceph-mon:
-    charm: cs:~openstack-charmers-next/ceph-mon
+    charm: cs:~openstack-charmers/ceph-mon
     num_units: 3
     options:
       source: cloud:bionic-train
       expected-osd-count: 3
   ceph-osd:
-    charm: cs:~openstack-charmers-next/ceph-osd
+    charm: cs:~openstack-charmers/ceph-osd
     constraints: mem=1G
     num_units: 3
     options:
@@ -191,24 +191,24 @@ applications:
     storage:
       osd-devices:  cinder,40G
   cinder-ceph:
-    charm: cs:~openstack-charmers-next/cinder-ceph
+    charm: cs:~openstack-charmers/cinder-ceph
   masakari-monitors:
-    charm: cs:~openstack-charmers-next/masakari-monitors
+    charm: cs:~openstack-charmers/masakari-monitors
   hacluster:
-    charm: cs:~openstack-charmers-next/hacluster
+    charm: cs:~openstack-charmers/hacluster
     options:
       corosync_transport: unicast
       cluster_count: 3
   pacemaker-remote:
-    charm: cs:~openstack-charmers-next/pacemaker-remote
+    charm: cs:~openstack-charmers/pacemaker-remote
     options:
       enable-stonith: False
       enable-resources: False
   vault:
     num_units: 1
-    charm: cs:~openstack-charmers-next/vault
+    charm: cs:~openstack-charmers/vault
   placement:
-    charm: cs:~openstack-charmers-next/placement
+    charm: cs:~openstack-charmers/placement
     num_units: 1
     options:
       openstack-origin: cloud:bionic-train
