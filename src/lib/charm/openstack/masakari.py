@@ -86,3 +86,8 @@ class MasakariCharmUssuri(MasakariCharm):
 
     release = 'ussuri'
     python_version = 3
+
+    # Explicitly adding python3-sqlalchemy-utils until Bug 1882900 is fixed.
+
+    packages = ['masakari-api', 'masakari-engine', 'python-apt',
+                'python3-sqlalchemy-utils']
