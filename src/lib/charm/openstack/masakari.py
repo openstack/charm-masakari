@@ -53,6 +53,7 @@ class MasakariCharm(charms_openstack.charm.HAOpenStackCharm):
             ('7', 'stein'),
             ('8', 'train'),
             ('9', 'ussuri'),
+            ('10', 'victoria'),
         ]),
     }
 
