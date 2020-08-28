@@ -20,9 +20,9 @@ gate_bundles:
   - bionic-train-pacemaker-remote-ssl
   - bionic-ussuri-pacemaker-remote-ssl
   - focal-ussuri-pacemaker-remote-ssl
+  - focal-victoria-pacemaker-remote-ssl
 
 dev_bundles:
-  - focal-victoria-pacemaker-remote-ssl
   - groovy-victoria-pacemaker-remote-ssl
 
 smoke_bundles:
