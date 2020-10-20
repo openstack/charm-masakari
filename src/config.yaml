@@ -19,3 +19,15 @@ options:
     description: |
       Whether to restrict instance evacuation to instances with ha enabled
       in their metadata
+  notification-expiration:
+    type: int
+    default:
+    description: |
+      The length of time that a notification is considered as valid,
+      specified in seconds.
+  check-expired-interval:
+    type: int
+    default:
+    description: |
+      The period where expired notifications are checked and processed,
+      specified in seconds.
