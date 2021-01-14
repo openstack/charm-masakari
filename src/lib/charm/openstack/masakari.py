@@ -90,5 +90,5 @@ class MasakariCharmUssuri(MasakariCharm):
 
     # Explicitly adding python3-sqlalchemy-utils until Bug 1882900 is fixed.
 
-    packages = ['masakari-api', 'masakari-engine', 'python-apt',
+    packages = ['masakari-api', 'masakari-engine', 'python3-apt',
                 'python3-sqlalchemy-utils']
