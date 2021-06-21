@@ -160,7 +160,6 @@ applications:
 
   masakari:
     charm: ../../../masakari
-    series: groovy
     num_units: 3
     options:
       openstack-origin: *openstack-origin
