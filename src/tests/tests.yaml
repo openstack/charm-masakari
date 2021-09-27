@@ -25,7 +25,9 @@ dev_bundles:
 # Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
 # packaging
   - bionic-rocky-pacemaker-remote-ssl
+  - focal-xena-pacemaker-remote-ssl
   - hirsute-wallaby-pacemaker-remote-ssl
+  - impish-xena-pacemaker-remote-ssl
 
 smoke_bundles:
   - focal-ussuri-pacemaker-remote-ssl
@@ -49,4 +51,5 @@ target_deploy_status:
 
 tests_options:
   force_deploy:
-    - hirsute-wallaby-pacemaker-remote-ssl
+    - groovy-victoria-pacemaker-remote-ssl
+    - impish-xena-pacemaker-remote-ssl
