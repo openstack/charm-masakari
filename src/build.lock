@@ -200,7 +200,7 @@
       "type": "python_module",
       "package": "dnspython",
       "vcs": null,
-      "version": "2.1.0"
+      "version": "1.16.0"
     },
     {
       "type": "python_module",
