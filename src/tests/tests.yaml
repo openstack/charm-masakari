@@ -14,20 +14,21 @@ configure:
 
 gate_bundles:
   - bionic-stein-pacemaker-remote-ssl
-  - bionic-train-pacemaker-remote-ssl
   - bionic-ussuri-pacemaker-remote-ssl
   - focal-ussuri-pacemaker-remote-ssl
   - focal-victoria-pacemaker-remote-ssl
   - focal-wallaby-pacemaker-remote-ssl
-  - groovy-victoria-pacemaker-remote-ssl
+  - focal-xena-pacemaker-remote-ssl
+  - hirsute-wallaby-pacemaker-remote-ssl
+  - impish-xena-pacemaker-remote-ssl
 
 dev_bundles:
 # Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
 # packaging
   - bionic-rocky-pacemaker-remote-ssl
-  - focal-xena-pacemaker-remote-ssl
-  - hirsute-wallaby-pacemaker-remote-ssl
-  - impish-xena-pacemaker-remote-ssl
+  - bionic-train-pacemaker-remote-ssl
+  - focal-yoga-pacemaker-remote-ssl
+  - jammy-yoga-pacemaker-remote-ssl
 
 smoke_bundles:
   - focal-ussuri-pacemaker-remote-ssl
@@ -51,5 +52,6 @@ target_deploy_status:
 
 tests_options:
   force_deploy:
-    - groovy-victoria-pacemaker-remote-ssl
+    - hirsute-wallaby-pacemaker-remote-ssl
     - impish-xena-pacemaker-remote-ssl
+    - jammy-yoga-pacemaker-remote-ssl

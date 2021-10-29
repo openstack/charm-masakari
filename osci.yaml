@@ -10,11 +10,13 @@
       - focal-ussuri-pacemaker-remote-ssl_masakari
       - focal-victoria-pacemaker-remote-ssl_masakari
       - focal-wallaby-pacemaker-remote-ssl_masakari
-      - focal-xena-pacemaker-remote-ssl_masakari:
+      - focal-xena-pacemaker-remote-ssl_masakari
+      - focal-yoga-pacemaker-remote-ssl_masakari:
           voting: false
-      - groovy-victoria-pacemaker-remote-ssl_masakari
       - hirsute-wallaby-pacemaker-remote-ssl_masakari
       - impish-xena-pacemaker-remote-ssl_masakari:
+          voting: false
+      - jammy-yoga-pacemaker-remote-ssl_masakari:
           voting: false
     vars:
       needs_charm_build: true
@@ -69,11 +71,11 @@
     vars:
       tox_extra_args: focal-xena-pacemaker-remote-ssl
 - job:
-    name: groovy-victoria-pacemaker-remote-ssl_masakari
+    name: focal-yoga-pacemaker-remote-ssl_masakari
     parent: func-target
     dependencies: *smoke-jobs
     vars:
-      tox_extra_args: groovy-victoria-pacemaker-remote-ssl
+      tox_extra_args: focal-yoga-pacemaker-remote-ssl
 - job:
     name: hirsute-wallaby-pacemaker-remote-ssl_masakari
     parent: func-target
@@ -86,3 +88,9 @@
     dependencies: *smoke-jobs
     vars:
       tox_extra_args: impish-xena-pacemaker-remote-ssl
+- job:
+    name: jammy-yoga-pacemaker-remote-ssl_masakari
+    parent: func-target
+    dependencies: *smoke-jobs
+    vars:
+      tox_extra_args: jammy-yoga-pacemaker-remote-ssl
