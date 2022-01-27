@@ -1,18 +1,12 @@
 - project:
     templates:
-      - charm-yoga-unit-jobs
+      - charm-unit-jobs-py38
+      - charm-unit-jobs-py39
     check:
       jobs:
-      - charm-build
-      - bionic-stein-pacemaker-remote-ssl_masakari
-      - bionic-ussuri-pacemaker-remote-ssl_masakari
-      - focal-ussuri-pacemaker-remote-ssl_masakari
-      - focal-victoria-pacemaker-remote-ssl_masakari
-      - focal-wallaby-pacemaker-remote-ssl_masakari
       - focal-xena-pacemaker-remote-ssl_masakari
       - focal-yoga-pacemaker-remote-ssl_masakari:
           voting: false
-      - hirsute-wallaby-pacemaker-remote-ssl_masakari
       - impish-xena-pacemaker-remote-ssl_masakari:
           voting: false
       - jammy-yoga-pacemaker-remote-ssl_masakari:
@@ -20,68 +14,36 @@
     vars:
       needs_charm_build: true
       charm_build_name: masakari
+      build_type: charmcraft
 
-- job:
-    name: bionic-ussuri-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: &smoke-jobs
-      - osci-lint
-      - tox-py36
-      - tox-py38
-      - tox-py39
-    vars:
-      tox_extra_args: bionic-ussuri-pacemaker-remote-ssl
-- job:
-    name: bionic-stein-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: bionic-stein-pacemaker-remote-ssl
-- job:
-    name: focal-ussuri-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-ussuri-pacemaker-remote-ssl
-- job:
-    name: focal-victoria-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-victoria-pacemaker-remote-ssl
-- job:
-    name: focal-wallaby-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-wallaby-pacemaker-remote-ssl
 - job:
     name: focal-xena-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - osci-lint
+      - tox-py38
+      - tox-py39
+      - charm-build
     vars:
       tox_extra_args: focal-xena-pacemaker-remote-ssl
 - job:
     name: focal-yoga-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: focal-yoga-pacemaker-remote-ssl
 - job:
-    name: hirsute-wallaby-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: hirsute-wallaby-pacemaker-remote-ssl
-- job:
     name: impish-xena-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: impish-xena-pacemaker-remote-ssl
 - job:
     name: jammy-yoga-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: jammy-yoga-pacemaker-remote-ssl

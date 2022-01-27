@@ -13,45 +13,37 @@ configure:
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 
 gate_bundles:
-  - bionic-stein-pacemaker-remote-ssl
-  - bionic-ussuri-pacemaker-remote-ssl
-  - focal-ussuri-pacemaker-remote-ssl
-  - focal-victoria-pacemaker-remote-ssl
   - focal-wallaby-pacemaker-remote-ssl
   - focal-xena-pacemaker-remote-ssl
-  - hirsute-wallaby-pacemaker-remote-ssl
   - impish-xena-pacemaker-remote-ssl
 
 dev_bundles:
 # Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
 # packaging
-  - bionic-rocky-pacemaker-remote-ssl
-  - bionic-train-pacemaker-remote-ssl
   - focal-yoga-pacemaker-remote-ssl
   - jammy-yoga-pacemaker-remote-ssl
 
 smoke_bundles:
-  - focal-ussuri-pacemaker-remote-ssl
+  - focal-xena-pacemaker-remote-ssl
 
 target_deploy_status:
   easyrsa:
-    workload-status-message: Certificate Authority connected.
+    workload-status-message-prefix: Certificate Authority connected.
   etcd:
-    workload-status-message: Healthy
+    workload-status-message-prefix: Healthy
   postgresql:
-    workload-status-message: Live
+    workload-status-message-prefix: Live
   vault:
     workload-status: blocked
-    workload-status-message: Vault needs to be initialized
+    workload-status-message-prefix: Vault needs to be initialized
   ceph-osd:
     workload-status: waiting
-    workload-status-message: "Incomplete relation: vault"
+    workload-status-message-prefix: "Incomplete relation: vault"
   ceph-mon:
     workload-status: waiting
-    workload-status-message: "Monitor bootstrapped but waiting for number of OSDs to reach expected-osd-count (3)"
+    workload-status-message-prefix: "Monitor bootstrapped but waiting for number of OSDs to reach expected-osd-count (3)"
 
 tests_options:
   force_deploy:
-    - hirsute-wallaby-pacemaker-remote-ssl
     - impish-xena-pacemaker-remote-ssl
     - jammy-yoga-pacemaker-remote-ssl
