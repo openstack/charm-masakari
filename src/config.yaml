@@ -31,3 +31,5 @@ options:
     description: |
       The period where expired notifications are checked and processed,
       specified in seconds.
+  openstack-origin:
+    default: cloud:focal-xena
