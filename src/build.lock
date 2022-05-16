@@ -180,6 +180,12 @@
     },
     {
       "type": "python_module",
+      "package": "poetry-core",
+      "vcs": null,
+      "version": "1.0.8"
+    },
+    {
+      "type": "python_module",
       "package": "netaddr",
       "vcs": null,
       "version": "0.7.19"
