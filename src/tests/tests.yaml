@@ -13,22 +13,13 @@ configure:
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 
 gate_bundles:
-  - bionic-stein-pacemaker-remote-ssl
-  - bionic-train-pacemaker-remote-ssl
-  - bionic-ussuri-pacemaker-remote-ssl
-  - focal-ussuri-pacemaker-remote-ssl
   - focal-victoria-pacemaker-remote-ssl
   - focal-wallaby-pacemaker-remote-ssl
-  - groovy-victoria-pacemaker-remote-ssl
 
-dev_bundles:
-# Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
-# packaging
-  - bionic-rocky-pacemaker-remote-ssl
-  - hirsute-wallaby-pacemaker-remote-ssl
+dev_bundles: []
 
 smoke_bundles:
-  - focal-ussuri-pacemaker-remote-ssl
+  - focal-wallaby-pacemaker-remote-ssl
 
 target_deploy_status:
   easyrsa:
@@ -48,5 +39,4 @@ target_deploy_status:
     workload-status-message: "Monitor bootstrapped but waiting for number of OSDs to reach expected-osd-count (3)"
 
 tests_options:
-  force_deploy:
-    - hirsute-wallaby-pacemaker-remote-ssl
+  force_deploy: []
