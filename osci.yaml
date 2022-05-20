@@ -1,72 +1,38 @@
 - project:
     templates:
-      - charm-unit-jobs
+      - charm-unit-jobs-py36
+      - charm-unit-jobs-py38
     check:
       jobs:
-      - charm-build
-      - bionic-stein-pacemaker-remote-ssl_masakari
       - bionic-train-pacemaker-remote-ssl_masakari
       - bionic-ussuri-pacemaker-remote-ssl_masakari
       - focal-ussuri-pacemaker-remote-ssl_masakari
-      - focal-victoria-pacemaker-remote-ssl_masakari
-      - focal-wallaby-pacemaker-remote-ssl_masakari
-      - groovy-victoria-pacemaker-remote-ssl_masakari
-      - hirsute-wallaby-pacemaker-remote-ssl_masakari
     vars:
       needs_charm_build: true
       charm_build_name: masakari
+      build_type: charmcraft
 
-- job:
-    name: bionic-stein-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: &smoke-jobs
-      - bionic-train-pacemaker-remote-ssl_masakari
-    vars:
-      tox_extra_args: bionic-stein-pacemaker-remote-ssl
 - job:
     name: bionic-train-pacemaker-remote-ssl_masakari
     parent: func-target
     dependencies:
+      - charm-build
       - osci-lint
-      - tox-py35
       - tox-py36
-      - tox-py37
       - tox-py38
     vars:
       tox_extra_args: bionic-train-pacemaker-remote-ssl
 - job:
     name: bionic-ussuri-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - bionic-train-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: bionic-ussuri-pacemaker-remote-ssl
 - job:
     name: focal-ussuri-pacemaker-remote-ssl_masakari
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - bionic-train-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: focal-ussuri-pacemaker-remote-ssl
-- job:
-    name: focal-victoria-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-victoria-pacemaker-remote-ssl
-- job:
-    name: focal-wallaby-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-wallaby-pacemaker-remote-ssl
-- job:
-    name: groovy-victoria-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: groovy-victoria-pacemaker-remote-ssl
-- job:
-    name: hirsute-wallaby-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: hirsute-wallaby-pacemaker-remote-ssl
