@@ -45,8 +45,8 @@
       "item": "masakari",
       "url": null,
       "vcs": null,
-      "branch": "refs/heads/master\nrefs/heads/stable/yoga\nrefs/heads/yoga-updates",
-      "commit": "refs/heads/master\nrefs/heads/stable/yoga\nrefs/heads/yoga-updates"
+      "branch": "yoga-updates",
+      "commit": "yoga-updates"
     },
     {
       "type": "layer",
@@ -178,7 +178,7 @@
       "type": "python_module",
       "package": "charms.openstack",
       "url": "git+https://github.com/openstack/charms.openstack.git",
-      "branch": "refs/heads/master\nrefs/heads/stable/yoga",
+      "branch": "stable/yoga",
       "version": "13ef220ce3529fa7b8e11c6e4c5b352d05b6f148",
       "vcs": "git"
     },
@@ -216,7 +216,7 @@
       "type": "python_module",
       "package": "charmhelpers",
       "url": "git+https://github.com/juju/charm-helpers.git",
-      "branch": "refs/heads/master\nrefs/heads/stable/yoga",
+      "branch": "stable/yoga",
       "version": "971ac5117c96bd1cb4a6a520787e4509564da582",
       "vcs": "git"
     },
