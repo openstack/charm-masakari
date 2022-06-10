@@ -1,50 +1,9 @@
 - project:
     templates:
-      - charm-unit-jobs-py38
       - charm-unit-jobs-py310
-    check:
-      jobs:
-      - focal-xena-pacemaker-remote-ssl_masakari
-      - focal-yoga-pacemaker-remote-ssl_masakari:
-          voting: false
-      - impish-xena-pacemaker-remote-ssl_masakari:
-          voting: false
-      - jammy-yoga-pacemaker-remote-ssl_masakari:
-          voting: false
+      - charm-zed-functional-jobs
     vars:
       needs_charm_build: true
       charm_build_name: masakari
       build_type: charmcraft
-
-- job:
-    name: focal-xena-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies:
-      - osci-lint
-      - tox-py38
-      - name: tox-py310
-        soft: true
-      - charm-build
-    vars:
-      tox_extra_args: focal-xena-pacemaker-remote-ssl
-- job:
-    name: focal-yoga-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies:
-      - focal-xena-pacemaker-remote-ssl_masakari
-    vars:
-      tox_extra_args: focal-yoga-pacemaker-remote-ssl
-- job:
-    name: impish-xena-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies:
-      - focal-xena-pacemaker-remote-ssl_masakari
-    vars:
-      tox_extra_args: impish-xena-pacemaker-remote-ssl
-- job:
-    name: jammy-yoga-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies:
-      - focal-xena-pacemaker-remote-ssl_masakari
-    vars:
-      tox_extra_args: jammy-yoga-pacemaker-remote-ssl
+      charmcraft_channel: 2.0/stable

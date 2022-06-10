@@ -13,18 +13,15 @@ configure:
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 
 gate_bundles:
-  - focal-wallaby-pacemaker-remote-ssl
-  - focal-xena-pacemaker-remote-ssl
-  - impish-xena-pacemaker-remote-ssl
+  - jammy-yoga
 
 dev_bundles:
-# Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
-# packaging
-  - focal-yoga-pacemaker-remote-ssl
-  - jammy-yoga-pacemaker-remote-ssl
+  - jammy-yoga
+  - jammy-zed
+  - kinetic-zed
 
 smoke_bundles:
-  - focal-xena-pacemaker-remote-ssl
+  - jammy-yoga
 
 target_deploy_status:
   easyrsa:
@@ -45,5 +42,4 @@ target_deploy_status:
 
 tests_options:
   force_deploy:
-    - impish-xena-pacemaker-remote-ssl
-    - jammy-yoga-pacemaker-remote-ssl
+    - kinetic-zed
