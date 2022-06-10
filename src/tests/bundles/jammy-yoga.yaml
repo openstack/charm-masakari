@@ -1,7 +1,7 @@
 variables:
   openstack-origin: &openstack-origin distro
 
-local_overlay_enabled: False
+local_overlay_enabled: True
 
 series: jammy
 
@@ -69,8 +69,6 @@ applications:
   mysql-innodb-cluster:
     charm: ch:mysql-innodb-cluster
     num_units: 3
-    options:
-      source: *openstack-origin
     to:
       - '0'
       - '1'
@@ -230,10 +228,11 @@ applications:
     channel: latest/edge
 
   pacemaker-remote:
-    charm: cs:~openstack-charmers-next/pacemaker-remote
+    charm: ch:pacemaker-remote
     options:
       enable-stonith: False
       enable-resources: False
+    channel: latest/edge
 
   vault:
     num_units: 1
