@@ -43,28 +43,28 @@ applications:
 
   keystone-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   cinder-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   neutron-api-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   glance-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   nova-cloud-controller-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   masakari-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   vault-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   placement-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
 
   mysql-innodb-cluster:
     charm: ch:mysql-innodb-cluster
@@ -75,7 +75,7 @@ applications:
       - '0'
       - '1'
       - '2'
-    channel: 8.0.19/edge
+    channel: 8.0/edge
 
   glance:
     charm: ch:glance
@@ -85,7 +85,7 @@ applications:
       worker-multiplier: 0.25
     to:
       - '3'
-    channel: xena/edge
+    channel: yoga/edge
 
   cinder:
     charm: ch:cinder
@@ -96,7 +96,7 @@ applications:
       glance-api-version: 2
     to:
       - '4'
-    channel: xena/edge
+    channel: yoga/edge
 
   keystone:
     charm: ch:keystone
@@ -107,7 +107,7 @@ applications:
       worker-multiplier: 0.25
     to:
       - '5'
-    channel: xena/edge
+    channel: yoga/edge
 
   neutron-api:
     charm: ch:neutron-api
@@ -120,7 +120,7 @@ applications:
       worker-multiplier: 0.25
     to:
       - '6'
-    channel: xena/edge
+    channel: yoga/edge
 
   neutron-gateway:
     charm: ch:neutron-gateway
@@ -131,12 +131,12 @@ applications:
       worker-multiplier: 0.25
     to:
       - '7'
-    channel: xena/edge
+    channel: yoga/edge
 
   neutron-openvswitch:
     charm: ch:neutron-openvswitch
     num_units: 0
-    channel: xena/edge
+    channel: yoga/edge
 
   nova-cloud-controller:
     charm: ch:nova-cloud-controller
@@ -148,7 +148,7 @@ applications:
       debug: true
     to:
       - '23'
-    channel: xena/edge
+    channel: yoga/edge
 
   nova-compute:
     charm: ch:nova-compute
@@ -169,14 +169,14 @@ applications:
       - '8'
       - '9'
       - '10'
-    channel: xena/edge
+    channel: yoga/edge
 
   rabbitmq-server:
     charm: ch:rabbitmq-server
     num_units: 1
     to:
       - '11'
-    channel: latest/edge
+    channel: 3.9/edge
 
   masakari:
     charm: ../../../masakari.charm
@@ -198,7 +198,7 @@ applications:
       - '15'
       - '16'
       - '17'
-    channel: pacific/edge
+    channel: quincy/edge
 
   ceph-osd:
     charm: ch:ceph-osd
@@ -212,22 +212,22 @@ applications:
       - '18'
       - '19'
       - '20'
-    channel: pacific/edge
+    channel: quincy/edge
 
   cinder-ceph:
     charm: ch:cinder-ceph
-    channel: xena/edge
+    channel: yoga/edge
 
   masakari-monitors:
     charm: ch:masakari-monitors
-    channel: xena/edge
+    channel: yoga/edge
 
   hacluster:
     charm: ch:hacluster
     options:
       corosync_transport: unicast
       cluster_count: 3
-    channel: 2.0.3/edge
+    channel: 2.4/edge
 
   pacemaker-remote:
     charm: ch:pacemaker-remote
@@ -235,7 +235,7 @@ applications:
       enable-stonith: False
       enable-resources: False
     # using latest/edge until there is a xena/edge track available
-    channel: latest/edge
+    channel: yoga/edge
 
   vault:
     num_units: 1
@@ -251,7 +251,7 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '22'
-    channel: xena/edge
+    channel: yoga/edge
 
 relations:
 

@@ -43,28 +43,28 @@ applications:
 
   keystone-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   cinder-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   neutron-api-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   glance-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   nova-cloud-controller-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   masakari-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   vault-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
   placement-mysql-router:
     charm: ch:mysql-router
-    channel: 8.0.19/edge
+    channel: 8.0/edge
 
   mysql-innodb-cluster:
     charm: ch:mysql-innodb-cluster
@@ -75,7 +75,7 @@ applications:
       - '0'
       - '1'
       - '2'
-    channel: 8.0.19/edge
+    channel: 8.0/edge
 
   glance:
     charm: ch:glance
@@ -176,7 +176,7 @@ applications:
     num_units: 1
     to:
       - '11'
-    channel: latest/edge
+    channel: 3.9/edge
 
   masakari:
     charm: ../../../masakari.charm
@@ -235,7 +235,7 @@ applications:
       enable-stonith: False
       enable-resources: False
     # using latest/edge until there is a yoga/edge track available
-    channel: latest/edge
+    channel: yoga/edge
 
   vault:
     num_units: 1
