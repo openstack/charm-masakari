@@ -235,7 +235,7 @@ applications:
       enable-stonith: False
       enable-resources: False
     # using latest/edge until there is a yoga/edge track available
-    channel: yoga/edge
+    channel: jammy/edge
 
   vault:
     num_units: 1

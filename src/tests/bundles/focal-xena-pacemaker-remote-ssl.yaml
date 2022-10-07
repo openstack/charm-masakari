@@ -236,7 +236,7 @@ applications:
       enable-stonith: False
       enable-resources: False
     # using latest/edge until there is a xena/edge track available
-    channel: yoga/edge
+    channel: focal/edge
 
   vault:
     num_units: 1

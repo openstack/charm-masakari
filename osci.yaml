@@ -7,8 +7,6 @@
       - focal-xena-pacemaker-remote-ssl_masakari
       - focal-yoga-pacemaker-remote-ssl_masakari:
           voting: false
-      - impish-xena-pacemaker-remote-ssl_masakari:
-          voting: false
       - jammy-yoga-pacemaker-remote-ssl_masakari:
           voting: false
     vars:
@@ -34,13 +32,6 @@
       - focal-xena-pacemaker-remote-ssl_masakari
     vars:
       tox_extra_args: focal-yoga-pacemaker-remote-ssl
-- job:
-    name: impish-xena-pacemaker-remote-ssl_masakari
-    parent: func-target
-    dependencies:
-      - focal-xena-pacemaker-remote-ssl_masakari
-    vars:
-      tox_extra_args: impish-xena-pacemaker-remote-ssl
 - job:
     name: jammy-yoga-pacemaker-remote-ssl_masakari
     parent: func-target

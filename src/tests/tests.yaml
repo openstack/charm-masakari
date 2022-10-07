@@ -15,7 +15,6 @@ configure:
 gate_bundles:
   - focal-wallaby-pacemaker-remote-ssl
   - focal-xena-pacemaker-remote-ssl
-  - impish-xena-pacemaker-remote-ssl
 
 dev_bundles:
 # Rocky disabled until https://review.opendev.org/#/c/647756/ lands in
@@ -45,5 +44,4 @@ target_deploy_status:
 
 tests_options:
   force_deploy:
-    - impish-xena-pacemaker-remote-ssl
     - jammy-yoga-pacemaker-remote-ssl
