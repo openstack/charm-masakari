@@ -32,4 +32,4 @@ options:
       The period where expired notifications are checked and processed,
       specified in seconds.
   openstack-origin:
-    default: zed
+    default: antelope
