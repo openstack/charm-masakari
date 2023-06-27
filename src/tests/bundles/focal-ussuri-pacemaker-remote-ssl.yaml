@@ -225,6 +225,7 @@ applications:
 
   hacluster:
     charm: ch:hacluster
+    series: focal
     options:
       corosync_transport: unicast
       cluster_count: 3
@@ -232,10 +233,11 @@ applications:
 
   pacemaker-remote:
     charm: ch:pacemaker-remote
+    series: focal
     options:
       enable-stonith: False
       enable-resources: False
-    channel: ussuri/edge
+    channel: focal/edge
 
   vault:
     num_units: 1

@@ -213,16 +213,18 @@ applications:
     channel: ussuri/edge
   hacluster:
     charm: ch:hacluster
+    series: bionic
     options:
       corosync_transport: unicast
       cluster_count: 3
     channel: 2.0.3/edge
   pacemaker-remote:
     charm: ch:pacemaker-remote
+    series: bionic
     options:
       enable-stonith: False
       enable-resources: False
-    channel: ussuri/edge
+    channel: bionic/edge
   vault:
     num_units: 1
     charm: ch:vault
