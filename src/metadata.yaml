@@ -11,5 +11,5 @@ tags:
 - openstack
 series:
 - jammy
-- kinetic
 - lunar
+- mantic

@@ -13,14 +13,15 @@ configure:
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 
 gate_bundles:
-  - jammy-zed
+  - jammy-antelope
 
 dev_bundles:
-  - jammy-antelope
+  - jammy-bobcat
   - lunar-antelope
+  - mantic-bobcat
 
 smoke_bundles:
-  - jammy-zed
+  - jammy-antelope
 
 target_deploy_status:
   easyrsa:
@@ -42,3 +43,4 @@ target_deploy_status:
 tests_options:
   force_deploy:
     - lunar-antelope
+    - mantic-bobcat
