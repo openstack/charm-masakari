@@ -235,7 +235,7 @@ applications:
     options:
       enable-stonith: False
       enable-resources: False
-    channel: victoria/edge
+    channel: focal/edge
 
   vault:
     num_units: 1
