@@ -212,9 +212,7 @@ applications:
     options:
       enable-stonith: False
       enable-resources: False
-    # Temporarily use ussuri/edge as train edge is not published yet and
-    # may switch to non-openstack channels
-    channel: ussuri/edge
+    channel: bionic/edge
   vault:
     num_units: 1
     charm: ch:vault
