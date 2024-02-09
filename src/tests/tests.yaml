@@ -14,15 +14,12 @@ configure:
 
 gate_bundles:
   - jammy-antelope
-
-dev_bundles:
   - jammy-bobcat
-  - lunar-antelope
-  - mantic-bobcat
-
+  - jammy-caracal
+dev_bundles:
+  - noble-caracal
 smoke_bundles:
-  - jammy-antelope
-
+  - jammy-caracal
 target_deploy_status:
   easyrsa:
     workload-status-message-prefix: Certificate Authority connected.
@@ -42,5 +39,4 @@ target_deploy_status:
 
 tests_options:
   force_deploy:
-    - lunar-antelope
-    - mantic-bobcat
+    - noble-caracal

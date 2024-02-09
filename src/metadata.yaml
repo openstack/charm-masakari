@@ -8,8 +8,6 @@ description: |
   provisioning process down, and nova-compute host failure. Masakari also
   provides an API service to manage and control the automated rescue mechanism.
 tags:
-- openstack
+  - openstack
 series:
-- jammy
-- lunar
-- mantic
+  - jammy
