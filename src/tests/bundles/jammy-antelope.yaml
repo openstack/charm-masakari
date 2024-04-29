@@ -196,7 +196,7 @@ applications:
       - '15'
       - '16'
       - '17'
-    channel: reef/edge
+    channel: squid/edge
 
   ceph-osd:
     charm: ch:ceph-osd
@@ -210,7 +210,7 @@ applications:
       - '18'
       - '19'
       - '20'
-    channel: reef/edge
+    channel: squid/edge
 
   cinder-ceph:
     charm: ch:cinder-ceph
