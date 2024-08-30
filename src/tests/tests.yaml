@@ -13,13 +13,11 @@ configure:
   - zaza.openstack.charm_tests.masakari.setup.create_segments
 
 gate_bundles:
-  - jammy-antelope
-  - jammy-bobcat
-  - jammy-caracal
+  - noble-caracal
 dev_bundles:
   - noble-caracal
 smoke_bundles:
-  - jammy-caracal
+  - noble-caracal
 target_deploy_status:
   easyrsa:
     workload-status-message-prefix: Certificate Authority connected.
