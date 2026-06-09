@@ -177,7 +177,7 @@ applications:
     channel: latest/edge
 
   masakari:
-    charm: ../../../masakari.charm
+    charm: ../../../masakari_ubuntu@24.04-amd64.charm
     num_units: 3
     options:
       openstack-origin: *openstack-origin
