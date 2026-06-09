@@ -18,7 +18,6 @@ gate_bundles:
 dev_bundles:
   - jammy-yoga
   - jammy-zed
-  - kinetic-zed
 
 smoke_bundles:
   - jammy-yoga
@@ -39,7 +38,3 @@ target_deploy_status:
   ceph-mon:
     workload-status: waiting
     workload-status-message-prefix: "Monitor bootstrapped but waiting for number of OSDs to reach expected-osd-count (3)"
-
-tests_options:
-  force_deploy:
-    - kinetic-zed
