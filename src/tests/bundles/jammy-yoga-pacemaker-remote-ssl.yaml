@@ -179,7 +179,7 @@ applications:
     channel: 3.9/edge
 
   masakari:
-    charm: ../../../masakari.charm
+    charm: ../../../masakari_ubuntu@22.04-amd64.charm
     num_units: 3
     options:
       openstack-origin: *openstack-origin
