@@ -17,7 +17,6 @@ gate_bundles:
 
 dev_bundles:
   - jammy-bobcat
-  - mantic-bobcat
 
 smoke_bundles:
   - jammy-antelope
@@ -38,7 +37,3 @@ target_deploy_status:
   ceph-mon:
     workload-status: waiting
     workload-status-message-prefix: "Monitor bootstrapped but waiting for number of OSDs to reach expected-osd-count (3)"
-
-tests_options:
-  force_deploy:
-    - mantic-bobcat
